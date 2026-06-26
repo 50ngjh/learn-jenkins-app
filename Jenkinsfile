@@ -1,15 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+            reuseNode true
+        }
+    }
 
     stages {
         stage('Bulid') {
-
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
 
             steps {
                 sh '''
@@ -21,6 +19,18 @@ pipeline {
                     ls -la
                 '''
             }
+        }
+
+        stage('Test') {
+
+            steps {
+                echo 'Test stage'
+                sh '''
+                    test -f build/index.html
+                    npm test
+                '''
+            }
+
         }
     }
 }
