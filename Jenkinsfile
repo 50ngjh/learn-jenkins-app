@@ -49,7 +49,27 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy staging') {
+            steps {
+                sh '''
+                    npm install netlify-cli@20.1.1
+                    node_modules/.bin/netlify --version
+                    echo "프로젝트 스테이징 배포중.. 사이트 아이디: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build
+                '''
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: '운영 환경에 배포할까요?', ok: '네 배포합니다.'
+                }
+            }
+        }
+
+        stage('Deploy prod') {
             steps {
                 sh '''
                     npm install netlify-cli@20.1.1
