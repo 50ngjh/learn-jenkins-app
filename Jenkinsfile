@@ -99,7 +99,7 @@ pipeline {
                 docker { image 'mcr.microsoft.com/playwright:v1.39.0-jammy' }
             }
             environment {
-                CI_ENVIRONMENT_URL = 'https://legendary-mousse-2c5c10.netlify.app'
+                CI_ENVIRONMENT_URL = 'https://deluxe-tanuki-39fc61.netlify.app'
             }
             steps {
                 sh 'npx playwright test --reporter=html'
